@@ -24,6 +24,14 @@ public class OpenAiService {
     // https://github.com/langchain4j/langchain4j-examples/blob/main/other-examples/src/main/java/OtherServiceExamples.java
     public String send(String message) {
 
+        //insert AiService here, wrap with CompletableFuture?
+        //JSON mode
+        //System msg
+        //User msg
+        //Chat mem
+        //tools
+
+
         CompletableFuture<String> response = CompletableFuture.supplyAsync( () -> {
             //make api call here and return value?
             return null;
