@@ -3,7 +3,6 @@ package com.rc.rcapi.models;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModelName;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +13,11 @@ import org.springframework.stereotype.Component;
 @Setter
 @NoArgsConstructor
 @Component
-public class Model {
+public class ChatModel {
 
     private ChatLanguageModel model;
 
-    public Model(@Value("${open.ai.api.key}") String apiKey) {
+    public ChatModel(@Value("${open.ai.api.key}") String apiKey) {
         model = OpenAiChatModel
                 .builder()
                 .apiKey(apiKey)

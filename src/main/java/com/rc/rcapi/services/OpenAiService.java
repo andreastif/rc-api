@@ -3,7 +3,7 @@ package com.rc.rcapi.services;
 
 import com.rc.rcapi.domains.Recipe;
 import com.rc.rcapi.domains.StructuredRecipePrompt;
-import com.rc.rcapi.models.Model;
+import com.rc.rcapi.models.ChatModel;
 import com.rc.rcapi.models.RecipeAssistant;
 import dev.langchain4j.service.AiServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class OpenAiService {
     private RecipeAssistant recipeAssistant;
 
     @Autowired
-    public OpenAiService(Model chatModel) {
+    public OpenAiService(ChatModel chatModel) {
         this.recipeAssistant = AiServices.create(RecipeAssistant.class, chatModel.getModel());
     }
 

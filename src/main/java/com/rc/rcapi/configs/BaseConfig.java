@@ -1,7 +1,6 @@
 package com.rc.rcapi.configs;
 
-import com.rc.rcapi.models.Model;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rc.rcapi.models.ChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +13,8 @@ public class BaseConfig {
 
 
     @Bean
-    public Model chatModel() {
-        return new Model(openAiKey);
+    public ChatModel chatModel() {
+        return new ChatModel(openAiKey);
     }
 
 
