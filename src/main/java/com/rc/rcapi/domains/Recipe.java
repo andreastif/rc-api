@@ -25,6 +25,9 @@ public class Recipe {
     @Description("each step should be described in 1 sentence maximum")
     private List<String> steps;
 
+    @Description("a list of all ingredients used and their quantities")
+    private List<String> ingredients;
+
     @Override
     public String toString() {
         return "Recipe{" +
