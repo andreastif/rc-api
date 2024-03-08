@@ -1,6 +1,7 @@
 package com.rc.rcapi.services;
 
 
+import com.rc.rcapi.domains.PromptInput;
 import com.rc.rcapi.domains.Recipe;
 import com.rc.rcapi.domains.StructuredRecipePrompt;
 import com.rc.rcapi.models.ChatModel;
@@ -20,8 +21,8 @@ public class OpenAiService {
         this.recipeAssistant = AiServices.create(RecipeAssistant.class, chatModel.getModel());
     }
 
-    public Recipe send(String ingredients) {
-        return recipeAssistant.createRecipeFrom(new StructuredRecipePrompt(ingredients));
+    public Recipe send(PromptInput promptInput) {
+        return recipeAssistant.createRecipeFrom(new StructuredRecipePrompt(promptInput.ingredients(), promptInput.measurement(), promptInput.language()));
     }
 
 
