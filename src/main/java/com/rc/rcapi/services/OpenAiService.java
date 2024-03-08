@@ -1,49 +1,28 @@
 package com.rc.rcapi.services;
 
 
+import com.rc.rcapi.domains.Recipe;
+import com.rc.rcapi.domains.StructuredRecipePrompt;
+import com.rc.rcapi.models.Model;
+import com.rc.rcapi.models.RecipeAssistant;
+import dev.langchain4j.service.AiServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class OpenAiService {
 
-    //todo: START HERE -> https://docs.langchain4j.dev/category/tutorials
+    //docs: https://docs.langchain4j.dev/category/tutorials
+    private RecipeAssistant recipeAssistant;
 
-
-    // longterm memory
-    // https://github.com/langchain4j/langchain4j-examples/blob/main/other-examples/src/main/java/ServiceWithPersistentMemoryForEachUserExample.java
-
-    // runtime memory
-    // https://github.com/langchain4j/langchain4j-examples/blob/main/other-examples/src/main/java/ServiceWithMemoryExample.java
-
-    // Setting up a one way one response model without chat memory (chat memory is basically feeding in the previous messages to the context window...)
-    // https://github.com/andreastif/converter/blob/master/src/main/java/com/example/converter/services/OpenAiService.java
-
-    // "Json mode", structured outputs and more
-    // https://github.com/langchain4j/langchain4j-examples/blob/main/other-examples/src/main/java/OtherServiceExamples.java
-    public String send(String message) {
-
-        //insert AiService here, wrap with CompletableFuture?
-        //JSON mode
-        //System msg
-        //User msg
-        //Chat mem
-        //tools
-
-
-        CompletableFuture<String> response = CompletableFuture.supplyAsync( () -> {
-            //make api call here and return value?
-            return null;
-        });
-
-        //do something with the response
-
-        //return the response we did something with
-
-        return null;
+    @Autowired
+    public OpenAiService(Model chatModel) {
+        this.recipeAssistant = AiServices.create(RecipeAssistant.class, chatModel.getModel());
     }
 
+    public Recipe send(String ingredients) {
+        return recipeAssistant.createRecipeFrom(new StructuredRecipePrompt(ingredients));
+    }
 
 
 }
