@@ -5,7 +5,6 @@ import com.rc.rcapi.domains.StructuredRecipePrompt;
 
 
 public interface RecipeAssistant {
-
     Recipe createRecipeFrom(StructuredRecipePrompt ingredients);
 
 }
