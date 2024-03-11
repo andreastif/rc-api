@@ -17,6 +17,8 @@ public class ChatModel {
 
     private ChatLanguageModel model;
 
+    //todo: test gpt 3.5
+
     public ChatModel(@Value("${open.ai.api.key}") String apiKey) {
         model = OpenAiChatModel
                 .builder()
@@ -24,7 +26,8 @@ public class ChatModel {
                 .responseFormat("json_object")
                 .logRequests(true)
                 .logResponses(true)
-                .modelName(OpenAiChatModelName.GPT_4_1106_PREVIEW)
+//                .modelName(OpenAiChatModelName.GPT_4_1106_PREVIEW)
+                .modelName(OpenAiChatModelName.GPT_3_5_TURBO)
                 .temperature(0.4)
                 .maxTokens(1000)
                 .build();

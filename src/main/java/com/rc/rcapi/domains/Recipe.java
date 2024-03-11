@@ -19,7 +19,7 @@ public class Recipe {
     @Description("short title, 8 words maximum")
     private String title;
 
-    @Description("short description, 4 sentences maximum")
+    @Description("short description, 5 sentences maximum. Must include number of servings.")
     private String description;
 
     @Description("each step should be described in 1 sentence maximum")

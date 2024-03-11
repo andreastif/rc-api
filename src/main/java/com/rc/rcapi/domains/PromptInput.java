@@ -1,4 +1,7 @@
 package com.rc.rcapi.domains;
 
-public record PromptInput(String ingredients, String language, String measurement) {
+import lombok.Builder;
+
+@Builder
+public record PromptInput(String ingredientsAndOrRecipe, String language, String servings) {
 }

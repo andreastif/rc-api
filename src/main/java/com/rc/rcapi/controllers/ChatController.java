@@ -1,6 +1,6 @@
 package com.rc.rcapi.controllers;
 
-import com.rc.rcapi.domains.PromptInput;
+import com.rc.rcapi.domains.PromptDto;
 import com.rc.rcapi.domains.Recipe;
 import com.rc.rcapi.services.OpenAiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class ChatController {
     }
 
     @PostMapping("/")
-    Recipe SendMessage(@RequestBody PromptInput input) {
+    Recipe SendMessage(@RequestBody PromptDto input) {
         return openAiService.send(input);
     }
 
