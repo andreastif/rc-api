@@ -15,19 +15,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class ChatModel {
 
-    private ChatLanguageModel model;
+    private ChatLanguageModel GPT_4_1106;
+    private ChatLanguageModel GPT_3_5;
 
     //todo: gpt 4 turbo active
+    //todo: registered vs unregistered
 
     public ChatModel(@Value("${open.ai.api.key}") String apiKey) {
-        model = OpenAiChatModel
+        GPT_4_1106 = OpenAiChatModel
                 .builder()
                 .apiKey(apiKey)
                 .responseFormat("json_object")
                 .logRequests(true)
                 .logResponses(true)
                 .modelName(OpenAiChatModelName.GPT_4_1106_PREVIEW)
-//                .modelName(OpenAiChatModelName.GPT_3_5_TURBO)
+                .temperature(0.4)
+                .maxTokens(1000)
+                .build();
+
+        GPT_3_5 = OpenAiChatModel
+                .builder()
+                .apiKey(apiKey)
+                .responseFormat("json_object")
+                .logRequests(true)
+                .logResponses(true)
+                .modelName(OpenAiChatModelName.GPT_3_5_TURBO)
                 .temperature(0.4)
                 .maxTokens(1000)
                 .build();

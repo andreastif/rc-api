@@ -28,6 +28,9 @@ public class Recipe {
     @Description("a list of all ingredients used and their quantities")
     private List<String> ingredients;
 
+    @Description("a list of maximum 5 tags that encapsulates the essence of the recipe")
+    private List<String> tags;
+
     @Override
     public String toString() {
         return "Recipe{" +

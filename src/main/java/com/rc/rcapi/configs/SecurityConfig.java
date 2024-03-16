@@ -1,53 +1,63 @@
 package com.rc.rcapi.configs;
 
+import com.rc.rcapi.filters.CustomHeaderFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
     @Value("${api.user}")
-    public String apiUsername;
+    public String apiName;
 
     @Value("${api.pw}")
     public String apiPw;
 
+    private final CustomHeaderFilter customHeaderFilter;
+
+//    private final FirebaseJwtFilter firebaseJwtFilter;
+
+    @Autowired
+    public SecurityConfig(CustomHeaderFilter customHeaderFilter) {
+        this.customHeaderFilter = customHeaderFilter;
+
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(withDefaults())
-                .formLogin(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> req.anyRequest().authenticated());
+                .formLogin(AbstractHttpConfigurer::disable);
+
+
+        //must be authenticated jwt
+        http
+                .authorizeHttpRequests(request ->
+                        request
+                                .requestMatchers("api/v1/auth/**")
+                                .authenticated()
+                                .anyRequest().permitAll())
+                .oauth2ResourceServer(oauth2rs ->
+                        oauth2rs.jwt(Customizer.withDefaults()));
+
+
+        //global filters
+        http
+                .addFilterBefore(customHeaderFilter, UsernamePasswordAuthenticationFilter.class);
+
+
         return http.build();
     }
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails apiUser = User.builder()
-                .username(apiUsername)
-                .password(passwordEncoder().encode(apiPw))
-                .build();
-
-        return new InMemoryUserDetailsManager(apiUser);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 }
