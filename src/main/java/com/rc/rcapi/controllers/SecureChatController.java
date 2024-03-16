@@ -25,7 +25,6 @@ public class SecureChatController {
 
     @PostMapping("/create")
     Recipe createRecipeGpt4(@RequestBody PromptDto input) {
-        //todo: change before publishing API, this is just for testing
         return openAiService.createRecipeGPT_4(input);
     }
 }
