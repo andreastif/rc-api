@@ -10,19 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/")
-public class ChatController {
+@RequestMapping("/api/v1/auth")
+public class SecureChatController {
 
     private final OpenAiService openAiService;
 
     @Autowired
-    public ChatController(OpenAiService openAiService) {
+    public SecureChatController(OpenAiService openAiService) {
         this.openAiService = openAiService;
     }
 
+
     @PostMapping("/create")
-    Recipe createRecipeGpt3_5(@RequestBody PromptDto input) {
+    Recipe createRecipeGpt4(@RequestBody PromptDto input) {
+        //todo: change before publishing API, this is just for testing
         return openAiService.createRecipeGPT_3_5(input);
     }
-
 }

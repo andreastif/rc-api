@@ -38,3 +38,5 @@ out/
 
 # ENV
 .env
+# Firebase SDK
+recept-aabt-firebase-adminsdk.json

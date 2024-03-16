@@ -25,9 +25,11 @@ dependencies {
 	// dotenv
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 	// OpenAI implementation for langchain
-	implementation 'dev.langchain4j:langchain4j-open-ai:0.27.1'
+	implementation 'dev.langchain4j:langchain4j-open-ai:0.28.0'
 	// https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-core
-	implementation 'dev.langchain4j:langchain4j:0.27.1'
+	implementation 'dev.langchain4j:langchain4j:0.28.0'
+	// firebase admin sdk (token verification, minting, user management etc)
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
@@ -35,7 +37,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	// https://mvnrepository.com/artifact/dev.langchain4j/langchain4j
-	testImplementation 'dev.langchain4j:langchain4j:0.27.1'
+	testImplementation 'dev.langchain4j:langchain4j:0.28.0'
 }
 
 tasks.named('test') {
