@@ -23,20 +23,5 @@ public class BaseConfig {
         return new ChatModel(openAiKey);
     }
 
-    /**
-     * <a href="https://firebase.google.com/docs/admin/setup#java_1">...</a>
-     * setDatabaseUrl is optional
-     */
-    @Bean
-    FirebaseApp createFireBaseApp() throws IOException {
-        FileInputStream serviceAccount =
-                new FileInputStream("recept-aabt-firebase-adminsdk.json");
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-//                .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
-                .build();
-        return FirebaseApp.initializeApp(options);
-    }
-
 
 }
