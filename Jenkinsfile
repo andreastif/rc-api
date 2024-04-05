@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh './gradlew --build' // Builds the .JAR
+                sh './gradlew build' // Builds the .JAR
             }
         }
         stage('Create Docker Image') {
