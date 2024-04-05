@@ -21,14 +21,15 @@ pipeline {
             steps {
                 script {
                      // Assumes that the JAR file is built with 'gradlew build'
-                    def app = docker.build("${REGISTRY_URL}/${IMAGE}:{TAG}")
+                    def app = docker.build("${REGISTRY_URL}/${IMAGE}:${TAG}")
+
                 }
             }
         }
         stage('Push Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${REGISTRY_URL}", REGISTRY_CREDENTIALS) {
+                    docker.withRegistry("https://${REGISTRY_URL}", REGISTRY_CREDENTIALS_ID) {
                         docker.image("${REGISTRY_URL}/${IMAGE}:${TAG}").push()
                     }
                 }
