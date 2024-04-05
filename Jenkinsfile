@@ -3,7 +3,7 @@ pipeline {
     environment {
         REGISTRY_CREDENTIALS_ID = 'andtif-registry-credentials'
         REGISTRY_URL = 'registry.andtif.codes'
-        IMAGE = 'RC-API'
+        IMAGE = 'rc-api'
         TAG = 'latest'
     }
     stages {
