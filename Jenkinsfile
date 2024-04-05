@@ -1,9 +1,9 @@
 pipeline {
-    agent { docker { image 'gradle:jdk17-alpine' } }
+    agent { label 'docker-java-gradle-agent' }
     stages {
         stage('build') {
             steps {
-                sh 'gradle --version'
+                sh './gradlew --version'
             }
         }
     }
