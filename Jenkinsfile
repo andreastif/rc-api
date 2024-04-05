@@ -12,21 +12,32 @@ pipeline {
                 checkout scm // Checks out source code to workspace
             }
         }
+        stage('Test') {
+            steps {
+                // Add your testing steps here
+                sh './gradlew test' // For example, if you have a Gradle task for testing
+            }
+        }
         stage('Build') {
             steps {
                 sh './gradlew build' // Builds the .JAR
             }
         }
         stage('Create Docker Image') {
+            when {
+                branch 'master' // Only run this stage when on 'master' branch
+            }
             steps {
                 script {
-                     // Assumes that the JAR file is built with 'gradlew build'
+                    // Assumes that the JAR file is built with 'gradlew build'
                     def app = docker.build("${REGISTRY_URL}/${IMAGE}:${TAG}")
-
                 }
             }
         }
         stage('Push Image') {
+            when {
+                branch 'master' // Only run this stage when on 'master' branch
+            }
             steps {
                 script {
                     docker.withRegistry("https://${REGISTRY_URL}", REGISTRY_CREDENTIALS_ID) {
@@ -35,5 +46,22 @@ pipeline {
                 }
             }
         }
+        // Optionally, you can add a deployment stage here with a similar 'when' condition for 'master' branch
     }
+    post {
+            always {
+                archiveArtifacts artifacts: '**/build/logs/*.log', allowEmptyArchive: true
+                // The above assumes that your logs are in 'build/logs' directory and have a '.log' extension
+                // 'allowEmptyArchive: true' means don't fail the build if no logs are found
+            }
+            failure {
+                echo 'The build failed, see archived logs for details.'
+                // Additional failure handling...
+            }
+            success {
+                echo 'Build and deployment were successful.'
+                // Additional success handling...
+            }
+            // You can also add 'unstable', 'aborted' conditions as needed
+        }
 }
