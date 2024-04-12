@@ -12,6 +12,15 @@ pipeline {
                 checkout scm // Checks out source code to workspace
             }
         }
+    stage('Test SSH') {
+            steps {
+                sshagent(credentials: ['SSH-agent-to-ubuntu']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no andtif@192.168.68.134 "echo Hello from Jenkins!"
+                    '''
+                }
+            }
+        }
         stage('Test') {
             steps {
                 // Add your testing steps here
@@ -21,15 +30,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh './gradlew build' // Builds the .JAR
-            }
-        }
-        stage('Test SSH') {
-            steps {
-                sshagent(['SSH-agent-to-ubuntu']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no andtif@192.168.68.134 "echo Hello from Jenkins!"
-                    '''
-                }
             }
         }
         stage('Create Docker Image') {
