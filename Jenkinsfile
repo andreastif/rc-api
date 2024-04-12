@@ -23,6 +23,15 @@ pipeline {
                 sh './gradlew build' // Builds the .JAR
             }
         }
+        stage('Test SSH') {
+            steps {
+                sshagent(['SSH-agent-to-ubuntu']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no andtif@192.168.68.134 "echo Hello from Jenkins!"
+                    '''
+                }
+            }
+        }
         stage('Create Docker Image') {
             when {
                 branch 'master' // Only run this stage when on 'master' branch
