@@ -12,15 +12,6 @@ pipeline {
                 checkout scm // Checks out source code to workspace
             }
         }
-    stage('Test SSH') {
-            steps {
-                sshagent(credentials: ['SSH-agent-to-ubuntu']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no andtif@192.168.68.134 "echo Hello from Jenkins!"
-                    '''
-                }
-            }
-        }
         stage('Test') {
             steps {
                 // Add your testing steps here
@@ -52,6 +43,18 @@ pipeline {
                     docker.withRegistry("https://${REGISTRY_URL}", REGISTRY_CREDENTIALS_ID) {
                         docker.image("${REGISTRY_URL}/${IMAGE}:${TAG}").push()
                     }
+                }
+            }
+        }
+            stage('Deploy') {
+            steps {
+            when {
+                branch 'master' // Only run this stage when on 'master' branch
+            }
+                sshagent(credentials: ['SSH-agent-to-ubuntu']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no andtif@192.168.68.134 "echo Hello from Jenkins!"
+                    '''
                 }
             }
         }
