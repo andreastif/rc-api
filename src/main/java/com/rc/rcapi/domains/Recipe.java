@@ -37,6 +37,8 @@ public class Recipe {
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", steps=" + steps +
+                ", ingredients=" + ingredients +
+                ", tags=" + tags +
                 '}';
     }
 }

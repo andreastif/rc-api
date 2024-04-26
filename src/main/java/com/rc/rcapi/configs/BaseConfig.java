@@ -11,7 +11,6 @@ public class BaseConfig {
     @Value("${open.ai.api.key}")
     public String openAiKey;
 
-
     @Bean
     public ChatModel chatModel() {
         return new ChatModel(openAiKey);
