@@ -17,29 +17,21 @@ public class SecurityConfig {
 
     @Value("${api.user}")
     public String apiName;
-
     @Value("${api.pw}")
     public String apiPw;
-
     private final CustomHeaderFilter customHeaderFilter;
-
-//    private final FirebaseJwtFilter firebaseJwtFilter;
 
     @Autowired
     public SecurityConfig(CustomHeaderFilter customHeaderFilter) {
         this.customHeaderFilter = customHeaderFilter;
-
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable);
-
-
         //must be authenticated jwt
         http
                 .authorizeHttpRequests(request ->
@@ -49,15 +41,10 @@ public class SecurityConfig {
                                 .anyRequest().permitAll())
                 .oauth2ResourceServer(oauth2rs ->
                         oauth2rs.jwt(Customizer.withDefaults()));
-
-
         //global filters
         http
                 .addFilterBefore(customHeaderFilter, UsernamePasswordAuthenticationFilter.class);
 
-
         return http.build();
     }
-
-
 }

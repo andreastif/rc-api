@@ -18,9 +18,6 @@ public class ChatModel {
     private ChatLanguageModel GPT_4_1106;
     private ChatLanguageModel GPT_3_5;
 
-    //todo: gpt 4 turbo active
-    //todo: registered vs unregistered
-
     public ChatModel(@Value("${open.ai.api.key}") String apiKey) {
         GPT_4_1106 = OpenAiChatModel
                 .builder()
