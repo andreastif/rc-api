@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ChatControllerIT {
@@ -45,6 +46,9 @@ public class ChatControllerIT {
 
     @Test
     void whenNotLoggedIn_thenCreateRecipeGPT3_5_shouldAllowReturnNewRecipe() throws Exception {
+
+        log.info("Running test: whenNotLoggedIn_thenCreateRecipeGPT3_5_shouldAllowReturnNewRecipe()");
+
         String formatString = String.format("%s:%s", apiName, apiPw);
         String base64String = Base64.getEncoder().encodeToString(formatString.getBytes());
 
@@ -90,6 +94,8 @@ public class ChatControllerIT {
 
     @Test
     void whenNotLoggedInAndNoCustomHeaders_thenCreateRecipeGPT3_5_shouldReturnUnauthorized() throws Exception {
+
+        log.info("Running test: whenNotLoggedInAndNoCustomHeaders_thenCreateRecipeGPT3_5_shouldReturnUnauthorized()");
 
         PromptDto prompt = new PromptDto("cucumber, salt, pepper, vinegar, oil", "2", "english");
         Recipe expectedRecipe = new Recipe(

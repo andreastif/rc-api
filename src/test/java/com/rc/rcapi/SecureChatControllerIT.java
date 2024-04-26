@@ -50,7 +50,7 @@ public class SecureChatControllerIT {
     @WithMockUser
     void whenLoggedIn_thenCreateRecipeGPT4_shouldAllowReturnNewRecipe() throws Exception {
 
-        log.info("test");
+        log.info("Running test: whenLoggedIn_thenCreateRecipeGPT4_shouldAllowReturnNewRecipe()");
 
         String formatString = String.format("%s:%s", apiName, apiPw);
         String base64String = Base64.getEncoder().encodeToString(formatString.getBytes());
@@ -104,6 +104,8 @@ public class SecureChatControllerIT {
     @WithMockUser
     void whenLoggedInAndNoCustomHeaders_thenCreateRecipeGPT4_shouldReturnUnauthorized() throws Exception {
 
+        log.info("Running test: whenLoggedInAndNoCustomHeaders_thenCreateRecipeGPT4_shouldReturnUnauthorized()");
+
         PromptDto prompt = new PromptDto("cucumber, salt, pepper, vinegar, oil", "2", "english");
         Recipe expectedRecipe = new Recipe(
                 "Simple Cucumber Salad",
@@ -132,6 +134,7 @@ public class SecureChatControllerIT {
     @Test
     void whenNotLoggedIn_thenCreateRecipeGPT4_shouldReturnUnauthorized() throws Exception {
 
+        log.info("Running test: whenNotLoggedIn_thenCreateRecipeGPT4_shouldReturnUnauthorized()");
 
         PromptDto prompt = new PromptDto("cucumber, salt, pepper, vinegar, oil", "2", "english");
 
