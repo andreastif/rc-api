@@ -28,8 +28,6 @@ dependencies {
 	implementation 'dev.langchain4j:langchain4j-open-ai:0.30.0'
 	// https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-core
 	implementation 'dev.langchain4j:langchain4j:0.30.0'
-	// firebase admin sdk (token verification, minting, user management etc)
-	implementation 'com.google.firebase:firebase-admin:9.2.0'
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-jose
 	implementation 'org.springframework.security:spring-security-oauth2-jose:6.2.4'
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-resource-server
