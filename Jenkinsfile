@@ -20,18 +20,17 @@ pipeline {
         }
         stage('Test') {
             steps {
-                // Add your testing steps here
-                sh './gradlew test' // For example, if you have a Gradle task for testing
+                sh './gradlew test' // Run tests
             }
         }
         stage('Build') {
             steps {
-                sh './gradlew build' // Builds the .JAR
+                sh './gradlew build' // Build .JAR
             }
         }
         stage('Create Docker Image') {
             when {
-                branch 'master' // Only run this stage when on 'master' branch
+                branch 'master' 
             }
             steps {
                 script {
@@ -42,7 +41,7 @@ pipeline {
         }
         stage('Push Image') {
             when {
-                branch 'master' // Only run this stage when on 'master' branch
+                branch 'master'
             }
             steps {
                 script {
@@ -90,18 +89,15 @@ pipeline {
     }
     post {
             always {
-                archiveArtifacts artifacts: '**/build/logs/*.log', allowEmptyArchive: true
-                // The above assumes that your logs are in 'build/logs' directory and have a '.log' extension
-                // 'allowEmptyArchive: true' means don't fail the build if no logs are found
+               // TODO: SCP SAVE LOGS TO HOST HERE
             }
             failure {
-                echo 'The build failed, see archived logs for details.'
-                // Additional failure handling...
+                echo 'The build failed.'
             }
             success {
                 echo 'Build and deployment were successful.'
-                // Additional success handling...
+                
             }
-            // You can also add 'unstable', 'aborted' conditions as needed
+            // Do we need to add 'unstable', 'aborted' conditions ?
         }
 }
