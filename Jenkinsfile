@@ -102,8 +102,8 @@ pipeline {
                                         }
                                     }
                                 }
+                }
             }
-            
     post {
             failure {
                 echo 'The build failed.'
