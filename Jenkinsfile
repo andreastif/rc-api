@@ -78,7 +78,7 @@ pipeline {
                         sh '''
                             ssh ${SSH_ADDRESS} '
                                 echo "Logging into Docker registry..."
-                                echo $REGISTRY_PASS | docker login '${REGISTRY_URL}' -u $REGISTRY_USER --password-stdin
+                                echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u "\$REGISTRY_USER" --password-stdin
             
                                 echo "Pulling the latest image..."
                                 docker pull ${REGISTRY_URL}/${IMAGE}:${TAG}
@@ -90,11 +90,11 @@ pipeline {
                                 echo "Running new container..."
                                 docker run -d --name rc-api \\
                                 --network recipe-companion-network \\
-                                -e OPEN_AI_API_KEY='${OPEN_AI_API_KEY}' \\
-                                -e API_USER='${API_USER}' \\
-                                -e API_PW='${API_PW}' \\
-                                -e TOKEN_ISSUER_URI='${TOKEN_ISSUER_URI}' \\
-                                -e TOKEN_AUDIENCE='${TOKEN_AUDIENCE}' \\
+                                -e OPEN_AI_API_KEY="${OPEN_AI_API_KEY}" \\
+                                -e API_USER="${API_USER}" \\
+                                -e API_PW="${API_PW}" \\
+                                -e TOKEN_ISSUER_URI="${TOKEN_ISSUER_URI}" \\
+                                -e TOKEN_AUDIENCE="${TOKEN_AUDIENCE}" \\
                                 -p 9000:9000 \\
                                 ${REGISTRY_URL}/${IMAGE}:${TAG}
                             '
