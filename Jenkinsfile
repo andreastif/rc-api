@@ -9,12 +9,6 @@ pipeline {
         REGISTRY_URL = 'registry.andtif.codes'
         IMAGE = 'rc-api'
         TAG = 'latest'
-        
-        OPEN_AI_API_KEY = credentials('ENV_OPEN_AI_API_KEY')
-        API_USER = credentials('ENV_API_USER')
-        API_PW = credentials('ENV_API_PW')
-        TOKEN_ISSUER_URI = credentials('ENV_TOKEN_ISSUER_URI')
-        TOKEN_AUDIENCE = credentials('ENV_TOKEN_AUDIENCE')
     }
     stages {
         stage('Setup') {
@@ -35,18 +29,18 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running gradle tests'
-                sh './gradlew test' // For example, if you have a Gradle task for testing
+                sh './gradlew test' 
             }
         }
         stage('Build') {
             steps {
                 echo 'Building JAR'
-                sh './gradlew build' // Builds the .JAR
+                sh './gradlew build' 
             }
         }
         stage('Create Docker Image') {
             when {
-                branch 'master' // Only run this stage when on 'master' branch
+                branch 'master' 
             }
             steps {
                 script {
@@ -73,7 +67,14 @@ pipeline {
                 branch 'master' 
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'andtif-registry-credentials', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
+                withCredentials([
+                    usernamePassword(credentialsId: 'andtif-registry-credentials', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS'),
+                    string(credentialsId: 'ENV_OPEN_AI_API_KEY', variable: 'OPEN_AI_API_KEY'),
+                    string(credentialsId: 'ENV_API_USER', variable: 'API_USER'),
+                    string(credentialsId: 'ENV_API_PW', variable: 'API_PW'),
+                    string(credentialsId: 'ENV_TOKEN_ISSUER_URI', variable: 'TOKEN_ISSUER_URI'),
+                    string(credentialsId: 'ENV_TOKEN_AUDIENCE', variable: 'TOKEN_AUDIENCE')
+                ]) {
                     sshagent(credentials: ['SSH-agent-to-ubuntu']) {
                         sh """
                             ssh ${SSH_ADDRESS} '
@@ -90,11 +91,11 @@ pipeline {
                                 echo "Running new container..."
                                 docker run -d --name rc-api \\
                                 --network recipe-companion-network \\
-                                -e OPEN_AI_API_KEY="${OPEN_AI_API_KEY}" \\
-                                -e API_USER="${API_USER}" \\
-                                -e API_PW="${API_PW}" \\
-                                -e TOKEN_ISSUER_URI="${TOKEN_ISSUER_URI}" \\
-                                -e TOKEN_AUDIENCE="${TOKEN_AUDIENCE}" \\
+                                -e OPEN_AI_API_KEY="\$OPEN_AI_API_KEY" \\
+                                -e API_USER="\$API_USER" \\
+                                -e API_PW="\$API_PW" \\
+                                -e TOKEN_ISSUER_URI="\$TOKEN_ISSUER_URI" \\
+                                -e TOKEN_AUDIENCE="\$TOKEN_AUDIENCE" \\
                                 -p 9000:9000 \\
                                 ${REGISTRY_URL}/${IMAGE}:${TAG}
                             '
