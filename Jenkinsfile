@@ -9,6 +9,12 @@ pipeline {
         REGISTRY_URL = 'registry.andtif.codes'
         IMAGE = 'rc-api'
         TAG = 'latest'
+
+        OPEN_AI_API_KEY = credentials('ENV_OPEN_AI_API_KEY')
+        API_USER = credentials('ENV_API_USER')
+        API_PW = credentials('ENV_API_PW')
+        TOKEN_ISSUER_URI = credentials('ENV_TOKEN_ISSUER_URI')
+        TOKEN_AUDIENCE = credentials('ENV_TOKEN_AUDIENCE')
     }
     stages {
         stage('Setup') {
