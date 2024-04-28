@@ -77,7 +77,7 @@ pipeline {
                         sh '''
                             ssh ${SSH_ADDRESS} '
                                 echo "Logging into Docker registry..."
-                                echo $REGISTRY_PASS | docker login ${REGISTRY_URL} -u $REGISTRY_USER --password-stdin
+                                echo $REGISTRY_PASS | docker login '${REGISTRY_URL}' -u $REGISTRY_USER --password-stdin
             
                                 echo "Pulling the latest image..."
                                 docker pull ${REGISTRY_URL}/${IMAGE}:${TAG}
