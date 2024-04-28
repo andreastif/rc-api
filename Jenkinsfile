@@ -80,7 +80,6 @@ pipeline {
                     string(credentialsId: 'ENV_API_PW', variable: 'API_PW'),
                     string(credentialsId: 'ENV_TOKEN_ISSUER_URI', variable: 'TOKEN_ISSUER_URI'),
                     string(credentialsId: 'ENV_TOKEN_AUDIENCE', variable: 'TOKEN_AUDIENCE'),
-                    string(credentialsId: 'SSH-HOST-ADDRESS', variable: 'SSH_ADDRESS')
                 ]) {
                     sshagent(credentials: ['SSH-agent-to-ubuntu']) {
                         sh """
