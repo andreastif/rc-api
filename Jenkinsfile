@@ -73,46 +73,36 @@ pipeline {
                 branch 'master' 
             }
             steps {
-                withCredentials([
-                    usernamePassword(credentialsId: 'andtif-registry-credentials', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS'),
-                    string(credentialsId: 'ENV_OPEN_AI_API_KEY', variable: 'OPEN_AI_API_KEY'),
-                    string(credentialsId: 'ENV_API_USER', variable: 'API_USER'),
-                    string(credentialsId: 'ENV_API_PW', variable: 'API_PW'),
-                    string(credentialsId: 'ENV_TOKEN_ISSUER_URI', variable: 'TOKEN_ISSUER_URI'),
-                    string(credentialsId: 'ENV_TOKEN_AUDIENCE', variable: 'TOKEN_AUDIENCE'),
-                ]) {
-                    sshagent(credentials: ['SSH-agent-to-ubuntu']) {
-                        sh """
-                            ssh ${SSH_ADDRESS} '
-                                echo "Logging into Docker registry..."
-                                echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u "\$REGISTRY_USER" --password-stdin
-            
-                                echo "Pulling the latest image..."
-                                docker pull ${REGISTRY_URL}/${IMAGE}:${TAG}
-            
-                                echo "Stopping existing container if it exists..."
-                                docker stop rc-api || true
-                                docker rm rc-api || true
-            
-                                echo "Running new container..."
-                                docker run -d --name rc-api \\
-                                --network recipe-companion-network \\
-                                -e OPEN_AI_API_KEY="\$OPEN_AI_API_KEY" \\
-                                -e API_USER="\$API_USER" \\
-                                -e API_PW="\$API_PW" \\
-                                -e TOKEN_ISSUER_URI="\$TOKEN_ISSUER_URI" \\
-                                -e TOKEN_AUDIENCE="\$TOKEN_AUDIENCE" \\
-                                -p 9000:9000 \\
-                                ${REGISTRY_URL}/${IMAGE}:${TAG}
-                            '
-                        """
-                    }
-                }
-            }
-        }
-    }
+                 withCredentials([usernamePassword(credentialsId: 'andtif-registry-credentials', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
+                                    sshagent(credentials: ['SSH-agent-to-ubuntu']) {
+                                        sh """
+                                            ssh ${SSH_ADDRESS} '
+                                                echo "Logging into Docker registry..."
+                                                echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u "\$REGISTRY_USER" --password-stdin
+                            
+                                                echo "Pulling the latest image..."
+                                                docker pull ${REGISTRY_URL}/${IMAGE}:${TAG}
+                            
+                                                echo "Stopping existing container if it exists..."
+                                                docker stop rc-api || true
+                                                docker rm rc-api || true
+                            
+                                                echo "Running new container..."
+                                                docker run -d --name rc-api \\
+                                                --network recipe-companion-network \\
+                                                -e OPEN_AI_API_KEY="${OPEN_AI_API_KEY}" \\
+                                                -e API_USER="${API_USER}" \\
+                                                -e API_PW="${API_PW}" \\
+                                                -e TOKEN_ISSUER_URI="${TOKEN_ISSUER_URI}" \\
+                                                -e TOKEN_AUDIENCE="${TOKEN_AUDIENCE}" \\
+                                                -p 9000:9000 \\
+                                                ${REGISTRY_URL}/${IMAGE}:${TAG}
+                                            '
+                                        """
+                                        }
+                                    }
+                                }
     post {
-
             failure {
                 echo 'The build failed.'
             }
