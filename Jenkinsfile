@@ -76,17 +76,17 @@ pipeline {
                     sshagent(credentials: ['SSH-agent-to-ubuntu']) {
                         sh '''
                             ssh ${SSH_ADDRESS} '
-                                echo 'Logging into Docker registry...'
-                                echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u '\$REGISTRY_USER' --password-stdin
+                                echo "Logging into Docker registry..."
+                                echo $REGISTRY_PASS | docker login ${REGISTRY_URL} -u $REGISTRY_USER --password-stdin
             
-                                echo 'Pulling the latest image...'
+                                echo "Pulling the latest image..."
                                 docker pull ${REGISTRY_URL}/${IMAGE}:${TAG}
             
-                                echo 'Stopping existing container if it exists...'
+                                echo "Stopping existing container if it exists..."
                                 docker stop rc-api || true
                                 docker rm rc-api || true
             
-                                echo 'Running new container...'
+                                echo "Running new container..."
                                 docker run -d --name rc-api \\
                                 --network recipe-companion-network \\
                                 -e OPEN_AI_API_KEY='${OPEN_AI_API_KEY}' \\
