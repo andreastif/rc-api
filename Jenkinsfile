@@ -51,7 +51,7 @@ pipeline {
                 script {
                     echo 'Creating Docker Image.'
                     // Assumes that the JAR file is built with 'gradlew build'
-                    def app = docker.build('${REGISTRY_URL}/${IMAGE}:${TAG}')
+                    def app = docker.build("${REGISTRY_URL}/${IMAGE}:${TAG}")
                 }
             }
         }
