@@ -61,8 +61,9 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://${REGISTRY_URL}', REGISTRY_CREDENTIALS_ID) {
-                        docker.image('${REGISTRY_URL}/${IMAGE}:${TAG}').push()
+                    echo 'Pushing Docker Image.'
+                    docker.withRegistry("https://${REGISTRY_URL}", REGISTRY_CREDENTIALS_ID) {
+                        docker.image("${REGISTRY_URL}/${IMAGE}:${TAG}").push()
                     }
                 }
             }
