@@ -82,7 +82,7 @@ pipeline {
                     string(credentialsId: 'ENV_TOKEN_AUDIENCE', variable: 'TOKEN_AUDIENCE')
                 ]) {
                     sshagent(credentials: ['SSH-agent-to-ubuntu']) {
-                        sh """
+                        sh '''
                             ssh ${SSH_ADDRESS} '
                                 echo "Logging into Docker registry..."
                                 echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u "\$REGISTRY_USER" --password-stdin
@@ -105,7 +105,7 @@ pipeline {
                                 -p 9000:9000 \\
                                 ${REGISTRY_URL}/${IMAGE}:${TAG}
                             '
-                        """
+                        '''
                     }
                 }
             }
