@@ -76,7 +76,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'andtif-registry-credentials', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
                     sshagent(credentials: ['SSH-agent-to-ubuntu']) {
                         sh '''
-                            ssh ${SSH_ADDRESS} '
+                            ssh -o StrictHostKeyChecking=no ${SSH_ADDRESS} '
                                 echo "Logging into Docker registry..."
                                 echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u "\$REGISTRY_USER" --password-stdin
             
