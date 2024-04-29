@@ -73,7 +73,7 @@ pipeline {
                                 echo "Logged in to Docker registry"
                                 
                                 echo "Cleaning up untagged old images..."
-                                docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "${REGISTRY_URL}/${IMAGE}" | grep "<none>" | awk '{print \$3}' | xargs -r docker rmi
+                                docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "${REGISTRY_URL}/${IMAGE}" | grep "<none>" | awk '{print \$2}' | xargs -r docker rmi
                                 echo "Cleanup done."
                             '
                         """
