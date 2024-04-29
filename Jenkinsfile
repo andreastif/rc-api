@@ -59,28 +59,6 @@ pipeline {
                 }
             }
         }
-        stage('Cleanup Old Untagged Images') {
-            when {
-                branch 'master'
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'andtif-registry-credentials', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
-                    sshagent(credentials: ['SSH-agent-to-ubuntu']) {
-                        sh """
-                            ssh ${SSH_ADDRESS} '
-                                echo "Logging into Docker registry..."
-                                echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u "\$REGISTRY_USER" --password-stdin
-                                echo "Logged in to Docker registry"
-                                
-                                echo "Cleaning up untagged old images..."
-                                docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "${REGISTRY_URL}/${IMAGE}" | grep "<none>" | awk "{print \$2}" | xargs -r docker rmi
-                                echo "Cleanup done."
-                            '
-                        """
-                    }
-                }
-            }
-        }
         stage('Push Image') {
             when {
                 branch 'master'
@@ -125,6 +103,28 @@ pipeline {
                                 -p 9000:9000 \\
                                 ${REGISTRY_URL}/${IMAGE}:${TAG}
                                 echo "Finished running new container"
+                            '
+                        """
+                    }
+                }
+            }
+        }
+        stage('Cleanup Old Untagged Images') {
+            when {
+                branch 'master'
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'andtif-registry-credentials', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
+                    sshagent(credentials: ['SSH-agent-to-ubuntu']) {
+                        sh """
+                            ssh ${SSH_ADDRESS} '
+                                echo "Logging into Docker registry..."
+                                echo \$REGISTRY_PASS | docker login ${REGISTRY_URL} -u "\$REGISTRY_USER" --password-stdin
+                                echo "Logged in to Docker registry"
+                                
+                                echo "Cleaning up untagged old images..."
+                                docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "${REGISTRY_URL}/${IMAGE}" | grep "<none>" | awk "{print \$2}" | xargs -r docker rmi
+                                echo "Cleanup done."
                             '
                         """
                     }
